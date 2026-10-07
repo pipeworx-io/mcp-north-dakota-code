@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pipeworx-io/north-dakota-code",
+  "title": "North Dakota Code",
+  "description": "North Dakota Century Code — state statutes by citation and by topic.",
+  "version": "0.1.0",
+  "websiteUrl": "https://pipeworx.io/packs/north-dakota-code",
+  "repository": {
+    "url": "https://github.com/pipeworx-io/mcp-north-dakota-code",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gateway.pipeworx.io/north-dakota-code/mcp"
+    }
+  ]
+}
