@@ -1274,7 +1274,42 @@ async function extractPdfText(buf: ArrayBuffer): Promise<PdfExtractResult> {
  *
  * Keyless, no signup.
  */
-import { ND_CHAPTERS, ND_SECTIONS, ND_INDEX_CAPTURED_AT, type NdChapterRow } from './nd-index-data.js';
+import type { NdChapterRow, NdSectionRow } from './nd-index-data.js';
+
+// fleet #2754 (LIVE INCIDENT 2026-10-07): this index used to be a STATIC
+// import, so every gateway isolate evaluated it at startup whether or not it
+// ever served a north-dakota-code call — ~48MB of retained heap for the six baked state
+// codes together, ~13.4MB of the bundle, and about one gateway call in four
+// died as Cloudflare 1102 on cold isolates. The data module is now uploaded
+// to KV at deploy (workers/gateway/src/pack-baked-indexes.json registers it;
+// scripts/sync-gateway-static-json.mjs uploads it) and the gateway injects
+// the parsed object as `args._bakedIndex` on every call into this pack.
+// It is adopted once and kept for the isolate's life.
+//
+// NEVER value-import ./nd-index-data.js here again — a type-only import is
+// erased, a value import puts the whole table back into every isolate. The
+// deploy workflow's bundle-size ceiling fails the deploy if that happens.
+let ND_CHAPTERS: NdChapterRow[] = [];
+let ND_SECTIONS: NdSectionRow[] = [];
+let ND_INDEX_CAPTURED_AT = '';
+function ensureIndex(args: Record<string, unknown>): void {
+  if (ND_SECTIONS.length) return;
+  const idx = args._bakedIndex as Record<string, unknown> | null | undefined;
+  const chapters = idx?.ND_CHAPTERS;
+  const sections = idx?.ND_SECTIONS;
+  const capturedAt = idx?.ND_INDEX_CAPTURED_AT;
+  if (!Array.isArray(chapters) || !Array.isArray(sections) || sections.length === 0 || typeof capturedAt !== 'string') {
+    // Loud on purpose: answering from an empty table would read as "no such
+    // section" / "no match", a silent wrong answer.
+    throw new Error(
+      `north-dakota-code: the baked section index is unavailable (${idx == null ? 'not injected' : 'malformed'}). ` +
+        'The gateway loads it from KV on the first call into this pack; this is a server-side fault, not a bad citation or query — retry shortly.',
+    );
+  }
+  ND_CHAPTERS = chapters as NdChapterRow[];
+  ND_SECTIONS = sections as NdSectionRow[];
+  ND_INDEX_CAPTURED_AT = capturedAt;
+}
 
 const UA = 'pipeworx-mcp-north-dakota-code/1.0 (+https://pipeworx.io)';
 const UPSTREAM = 'North Dakota Legislative Branch (ndlegis.gov)';
@@ -1551,6 +1586,7 @@ const tools: McpToolExport['tools'] = [
 ];
 
 async function callTool(name: string, args: Record<string, unknown>): Promise<unknown> {
+  ensureIndex(args);
   switch (name) {
     case 'nd_statute':
       return ndStatute(args);
