@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-north-dakota-code",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "North Dakota Century Code — state statutes by citation and by topic.",
   "type": "module",
   "main": "src/index.ts",
@@ -26,7 +26,7 @@
     "@cloudflare/workers-types": "^4.20260405.1"
   },
   "pipeworx": {
-    "sourceHash": "v1-69ffe792d1f58e2ef88b3dabf144505b12728b923ae4132e8a4ff4441d37c62c",
-    "sourceCommit": "29efecb1e77577b1ce49e14f4fd7bbaee3e63885"
+    "sourceHash": "v1-586333192a1dee7ae64d0179cb30074a096ba573677ab97a4458cf78737ca6e7",
+    "sourceCommit": "051ee2039fc96224cb5b7358fd69d525bced13a6"
   }
 }
