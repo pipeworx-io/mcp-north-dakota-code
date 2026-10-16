@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-north-dakota-code",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "North Dakota Century Code — state statutes by citation and by topic. Fleet #2743.",
   "type": "module",
   "main": "src/index.ts",
@@ -26,7 +26,7 @@
     "@cloudflare/workers-types": "^4.20260405.1"
   },
   "pipeworx": {
-    "sourceHash": "v1-700304a1f8df0fb41f940f2538f516df060a82ce50e303b9f85b79ddcdb6705c",
-    "sourceCommit": "fe38188882d0fe91e5a45d82b7b989b4aae1e8b6"
+    "sourceHash": "v1-0f7561f2aa53173707702ce017ac1623bc7bd8a561e6043ef252cd73db5b297f",
+    "sourceCommit": "a03f96ed672b8c149593c64ecbf30280cabf084c"
   }
 }
