@@ -11,7 +11,7 @@ import * as bakedIndexModule from './nd-index-data.js';
 const bakedIndex = Object.fromEntries(Object.entries(bakedIndexModule));
 
 const server = new Server(
-  { name: '@pipeworx/mcp-north-dakota-code', version: '0.1.6' },
+  { name: '@pipeworx/mcp-north-dakota-code', version: '0.1.7' },
   { capabilities: { tools: {} } },
 );
 
