@@ -1,0 +1,38 @@
+[
+  {
+    "name": "nd_statute",
+    "description": "Get the FULL TEXT of a section of the North Dakota Century Code — North Dakota state law — by citation. \"12.1-16-01\" is murder; \"47-16-13.1\" is a landlord's duty to maintain a rental unit. Accepts natural forms: \"12.1-16-01\", \"NDCC 12.1-16-01\", \"§ 12.1-16-01\". Returns the current statutory text, the official catchline, and chapter/title context. North Dakota publishes the CURRENT text only — no per-year historical archive and no general amendment-history field (a repealed or redesignated section's one-line session-law citation is included in the text as-is); this tool says so rather than guessing. Keyless. Use for \"what does NDCC 12.1-16-01 say\" or to check a North Dakota statute a case or lease relies on.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "citation": {
+          "type": "string",
+          "description": "Section citation, title-chapter-section, e.g. \"12.1-16-01\" (murder) or \"47-16-13.1\" (landlord maintenance duty). Some sections carry a decimal suffix, e.g. \"47-16-07.3\"."
+        }
+      },
+      "required": [
+        "citation"
+      ]
+    }
+  },
+  {
+    "name": "nd_search",
+    "description": "Search the North Dakota Century Code BY TOPIC or keyword rather than citation — \"landlord security deposit\", \"concealed weapon permit\", \"homicide\". Matches against the Legislature's own official section and chapter CATCHLINES across the whole Code (not full statutory prose — North Dakota does not publish a full-text search of Code section text, verified live), e.g. \"landlord\" surfaces sections like \"Landlord obligations - Maintenance of premises\" even though no CHAPTER is named \"Landlord and Tenant\". Returns matching citations and catchlines; call nd_statute with a citation for the full text. Keyless.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Topic or keywords, e.g. \"landlord security deposit\"."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max results to return, default 10, max 25."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  }
+]
